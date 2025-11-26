@@ -4,10 +4,12 @@
 #by Tren3000 for Astar Linux 1.8 Smolensk
 
 echo -e "\e[32mЗапускайте скрипт от sudo-пользователя\e[0m"
+echo -e "\e[32mЕсли готовы, то нажмите Enter, чтобы продолжить...\e[0m"
+read -p "" # pause for waiting user, to start
 
 # Am i root ?????
 if [ "$EUID" -ne 0 ]; then
-    echo -e "\e[31mЗапустите скрипт от имени root (error_01)\e[0m"
+    echo -e "\e[31mОшибка! Скрипт запущен не от имени root (error_01)\e[0m"
     exit 1
 fi
 
@@ -30,22 +32,22 @@ fi
 
 if sudo cp /etc/syslog-ng/syslog-ng.conf /etc/syslog-ng/syslog-ng.conf.bak
     then 
-        echo -e "\e[32mСоздаю бэкап, на всякий пожарный ... \e[0m"
+        echo -e "\e[32mСоздаю бэкап, на всякий пожарный ... \e[0m"; sleep 2; echo
     else
-        echo -e "\e[33mБэкап пошёл не по плану, хз почему, но пофиг! Продолжаем!\e[0m"
+        echo -e "\e[33mБэкап пошёл не по плану, хз почему, но пофиг! Продолжаем!\e[0m";sleep 2; echo
 fi
-echo -e "\e[32mBackUp конфигурационного файла syslog-ng успешно создан\e[0m"
+echo -e "\e[32mBackUp конфигурационного файла syslog-ng успешно создан\e[0m";sleep 2; echo
 
 echo -e "\e[32mВведите имя лога, в виде имя_лога.log :\e[0m         "; read log_name
 
-echo -e "\e[32mСоздание log-файла ...\e[0m  "
+echo -e "\e[32mСоздание log-файла ...\e[0m  ";sleep 2; echo
 touch /var/log/$log_name # making log-file
 if [ ! -w "/var/log/$log_name" ]
     then
         echo -e "\e[31mОшибка! Нехватает прав для создания лога (error_03)\e[0m"
     exit 3
 fi
-echo -e "\e[32mLog-файл создан!\e[0m"
+echo -e "\e[32mLog-файл создан!\e[0m";sleep 2; echo
 echo -e "\e[32mВведите имя именованного канала, например mypipe :\e[0m         "; read pipe_name
 echo -e "\e[32mСоздание именнованного канала ...\e[0m"
 sudo mkfifo /tmp/$pipe_name
@@ -55,15 +57,15 @@ if [ ! -w "/tmp/$pipe_name" ]
         echo -e "\e[31mОшибка! Нехватает прав для создания именованного канала (error_05)\e[0m"
     exit 5
 fi
-echo -e "\e[32mФайл именованного канала создан! \e[0m"
-echo -e "\e[32mЗапись в конфигурационный файл syslog-ng ... \e[0m"
+echo -e "\e[32mФайл именованного канала создан! \e[0m";sleep 2; echo
+echo -e "\e[32mЗапись в конфигурационный файл syslog-ng ... \e[0m";sleep 2; echo
 if [ ! -w "/etc/syslog-ng/syslog-ng.conf" ]
     then
         echo -e "\e[31mОшибка! Нехватает прав для редактирования настроек syslog-ng (error_06)\e[0m"
     exit 6
 fi
 
-echo -e "\e[32mИдет запись в файл конфигурации syslog-ng ... \e[0m"
+echo -e "\e[32mИдет запись в файл конфигурации syslog-ng ... \e[0m";sleep 2; echo
 
 
 echo >> /etc/syslog-ng/syslog-ng.conf
