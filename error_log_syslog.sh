@@ -34,6 +34,7 @@ if sudo cp /etc/syslog-ng/syslog-ng.conf /etc/syslog-ng/syslog-ng.conf.bak
     else
         echo -e "\e[33mБэкап пошёл не по плану, хз почему, но пофиг! Продолжаем!\e[0m"
 fi
+echo -e "\e[32mBackUp конфигурационного файла syslog-ng успешно создан\e[0m"
 
 echo -e "\e[32mВведите имя лога, в виде имя_лога.log :\e[0m         "; read log_name
 
