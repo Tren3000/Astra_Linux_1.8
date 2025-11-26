@@ -23,9 +23,14 @@ if touch /root/1.txt &>/dev/null
 fi
 
 # Is it OS Astra Linux? Or is the syslog-ng installed ?
-if [ ! -w "/etc/syslog-ng/syslog-ng.conf" ]; then
-    echo -e "\e[31mОшибка! Не установлен syslog-ng, либо, у Вас не OS Astra Linux (error_03)\e[0m"
-        exit 3
+if [ ! -w "/etc/syslog-ng/syslog-ng.conf" ] 
+    then
+    echo -e "\e[31mВнимание! Не установлен syslog-ng\e[0m";sleep 2; echo
+    echo -e "\e[32mИнициализация установки syslog-ng, через менеджер пакетов APT...\e[0m";sleep 2; echo
+    sudo apt install syslog-ng -y
+        else
+            echo -e "\e[31mВнимание! Не удалось установить syslog-ng. Обратитесь к системному администратору (error_03)\e[0m" 
+    exit 3
 fi
 
 # BackUp syslog.conf
