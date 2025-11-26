@@ -45,7 +45,7 @@ if [ ! -w "/var/log/$log_name" ]
     exit 3
 fi
 echo "Log-файл создан!"
-echo "Введите имя именованного канала, например mypipe :         "; read testpipe_name
+echo "Введите имя именованного канала, например mypipe :         "; read pipe_name
 echo "Создание именнованного канала ... "
 sudo mkfifo /tmp/$pipe_name
 touch /tmp/$pipe_name # making pipe
@@ -66,7 +66,6 @@ echo "Идет запись в файл конфигурации syslog-ng ... "
 
 
 echo >> /etc/syslog-ng/syslog-ng.conf
-echo. >> /etc/syslog-ng/syslog-ng.conf
 echo "######################################" >> /etc/syslog-ng/syslog-ng.conf
 echo "# My logs by Tren3000" >> /etc/syslog-ng/syslog-ng.conf
 echo "######################################" >> /etc/syslog-ng/syslog-ng.conf
