@@ -62,9 +62,9 @@ fi
 echo -e "\e[32mLog-файл создан!\e[0m";sleep 2; echo
 echo -e "\e[32mВведите имя именованного канала, например mypipe :\e[0m         "; read pipe_name
 echo -e "\e[32mСоздание именнованного канала ...\e[0m"
-sudo mkfifo /tmp/$pipe_name
-touch /tmp/$pipe_name # making pipe
-if [ ! -w "/tmp/$pipe_name" ]
+sudo mkfifo /tmp/mylogs/$pipe_name
+touch /tmp/mylogs/$pipe_name # making pipe
+if [ ! -w "/tmp/mylogs/$pipe_name" ]
     then
         echo -e "\e[31mОшибка! Нехватает прав для создания именованного канала (error_05)\e[0m"
     exit 5
@@ -85,7 +85,7 @@ echo "######################################" >> /etc/syslog-ng/syslog-ng.conf
 echo "# My logs by Tren3000" >> /etc/syslog-ng/syslog-ng.conf
 echo "######################################" >> /etc/syslog-ng/syslog-ng.conf
 echo "destination d_mylog { file("/var/log/$log_name"); };" >> /etc/syslog-ng/syslog-ng.conf
-echo "destination d_mypipe { pipe("/var/tmp/$pipe_name"); };" >> /etc/syslog-ng/syslog-ng.conf
+echo "destination d_mypipe { pipe("/tmp/mylogs/$pipe_name"); };" >> /etc/syslog-ng/syslog-ng.conf
 echo "filter f_my { message('(\b[Ee]rr(or)?\b)'); };" >> /etc/syslog-ng/syslog-ng.conf
 echo "log { source(s_src); filter(f_my); destination(d_mylog); destination(d_mypipe); };" >> /etc/syslog-ng/syslog-ng.conf
 echo "######################################" >> /etc/syslog-ng/syslog-ng.conf
