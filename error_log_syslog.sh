@@ -1,3 +1,4 @@
+
 #!/usr/bin/bash
 #Scrips is making custom log-file, whitch contain words Error/error/Err/err
 #Run with sudo
@@ -7,7 +8,7 @@ echo -n "Запускайте скрипт от sudo-пользователя  "
 
 # Am i root ?????
 if [ "$EUID" -ne 0 ]; then
-    echo "Запустите скрипт от имени root (error_01)"
+    echo -n "Запустите скрипт от имени root (error_01)"
     exit 1
 fi
 
@@ -16,11 +17,26 @@ if touch /root/1.txt &>/dev/null
         then
         rm /root/1.txt
         else
-                echo "Сказано же, русским по белому - запускать от имени root (error_02)"
+                echo -n "Сказано же, русским по белому - запускать от имени root (error_02)"
         exit 2
 fi
 
-echo -n "Введите имя лога, в виде имя_лога.log :         "; read -p log_name
+# Is it OS Astra Linux? Or is the syslog-ng installed ?
+if [ ! -w "/etc/syslog-ng/syslog-ng.conf" ]; then
+    echo -n "Ошибка! Не установлен syslog-ng, либо, у Вас не OS Astra Linux (error_03)"
+        exit 3
+fi
+
+# BackUp syslog.conf
+
+if sudo cp /etc/syslog-ng/syslog-ng.conf /etc/syslog-ng/syslog-ng.conf.bak
+    then 
+        echo -n "Создаю бэкап, на всякий пожарный ... "
+    else
+        echo -n "Бэкап пошёл не по плану, хз почему, но пофиг! Продолжаем! "
+fi
+
+echo -n "Введите имя лога, в виде имя_лога.log :         "; read log_name
 
 echo -n "Создание log-файла ... "
 touch /var/log/$log_name # making log-file
@@ -30,21 +46,21 @@ if [ ! -w "/var/log/$log_name" ]
     exit 3
 fi
 echo -n "Log-файл создан!"
-echo -n "Введите имя именованного канала, например mypipe :         "; read -p pipe_name
+echo -n "Введите имя именованного канала, например mypipe :         "; read testpipe_name
 echo -n "Создание именнованного канала ... "
 sudo mkfifo /tmp/$pipe_name
 touch /tmp/$pipe_name # making pipe
 if [ ! -w "/tmp/$pipe_name" ]
     then
-        echo "Ошибка! Нехватает прав для создания именованного канала (error_04)"
-    exit 4
+        echo -n "Ошибка! Нехватает прав для создания именованного канала (error_05)"
+    exit 5
 fi
 echo -n "Файл именованного канала создан! "
 echo -n "Запись в конфигурационный файл syslog-ng ... "
 if [ ! -w "/etc/syslog-ng/syslog-ng.conf" ]
     then
-        echo "Ошибка! Нехватает прав для редактирования настроек syslog-ng (error_05)"
-    exit 5
+        echo -n "Ошибка! Нехватает прав для редактирования настроек syslog-ng (error_06)"
+    exit 6
 fi
 
 echo -n "Идет запись в файл конфигурации syslog-ng ... "
@@ -65,7 +81,7 @@ echo -n " Запись в конфигурационный файл прошла
 
 echo -n " Перезапускаю службу syslog-ng ... "
 
-sudo systemctl restart syslog-ng || echo -n " Перезагрузка службы syslog-ng завершилось ошибкой, проверьте настройки системы или перезагрузите службу syslog-ng вручную ! (error_06)"; exit 6
+sudo systemctl restart syslog-ng || echo -n " Перезагрузка службы syslog-ng завершилось ошибкой, проверьте настройки системы или перезагрузите службу syslog-ng вручную ! (error_07)"; exit 7
 
 echo " Установка скрипта прошла успешно! Наслаждайтесь результатом =) by Tren3000 "
 
