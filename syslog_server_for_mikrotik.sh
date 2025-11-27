@@ -245,7 +245,7 @@ sudo systemctl restart syslog-ng
 # Restart syslog-ng
 systemctl restart syslog-ng
 # Check status
-echo "Проверка статуса службы syslog-ng:";sleep 2; echo
+echo -e "\e[32mПроверка статуса службы syslog-ng: \e[0m";sleep 2; echo
 systemctl status syslog-ng --no-pager || echo -e "\e[33mПроверка статуса не удалась, но, в целом .... \e[0m"
 echo -e "\e[32mУстановка завершена успешно! ... by Tren3000 ... \e[0m"
 
