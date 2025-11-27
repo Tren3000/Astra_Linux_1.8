@@ -115,12 +115,20 @@ while true; do
 done
 
 echo -e "\e[32mПроизводится запись в конфигурационный файл ... \e[0m";sleep 2; echo
-echo >> /etc/syslog-ng/syslog-ng.conf
-echo "######################################" >> /etc/syslog-ng/syslog-ng.conf
-echo "# Mikrotik logs by Tren3000" >> /etc/syslog-ng/syslog-ng.conf
-echo "######################################" >> /etc/syslog-ng/syslog-ng.conf
-echo "source s_net { $protocol(ip($ip_address) port($port)); };" >> /etc/syslog-ng/syslog-ng.conf
-echo -e "\e[32mЗапись, в конфигурационный файл, успешно добавлена! \e[0m";sleep 2; echo
+
+# If code already exist in syslog-ng-conf
+expected_source_line="source s_net { $protocol(ip($ip_address) port($port)); };"
+
+if ! grep -Fq "$expected_source_line" /etc/syslog-ng/syslog-ng.conf; then
+    echo >> /etc/syslog-ng/syslog-ng.conf
+    echo "######################################" >> /etc/syslog-ng/syslog-ng.conf
+    echo "# Mikrotik logs by Tren3000" >> /etc/syslog-ng/syslog-ng.conf
+    echo "######################################" >> /etc/syslog-ng/syslog-ng.conf
+    echo "source s_net { $protocol(ip($ip_address) port($port)); };" >> /etc/syslog-ng/syslog-ng.conf
+    echo -e "\e[32mЗапись, в конфигурационный файл, успешно добавлена! \e[0m";sleep 2; echo
+else
+    echo -e "\e[33mЗапись о данных сервера syslog-ng, уже присутствует в файле, добавление пропущено! \e[0m";sleep 2; echo
+fi
 ##########################################################################////END_SERVER//////###################################################
 
 ##########################################################################////SENDER//////###################################################
@@ -226,7 +234,7 @@ while true; do
         echo "filter f_mikrotik_${counter} { netmask("$sender_ip_address/255.255.255.255"); };" >> /etc/syslog-ng/conf.d/mikrotik.conf
         echo "log { source(s_net); filter(f_mikrotik_${counter}); destination(d_mikrotik_${counter}); };" >> /etc/syslog-ng/conf.d/mikrotik.conf
     elif [[ "$add_more" =~ ^[Nn]$ ]]; then
-        echo -e "\e[32mЗавершение добавления IP-адресов\e[0m"
+        echo -e "\e[32mЗавершение добавления IP-адресов\e[0m";sleep 2; echo
         break
     else
         echo "\e[33mПожалуйста, введите y или n.\e[0m"
