@@ -1,5 +1,5 @@
 Скрипты для оптимизации задач
-OS Astra Linux 1.7/1.8/Debian/Ubuntu
+OS Astra Linux 1.8
 
 Состав:
   - error_log_syslog.sh Скрипт создающий отдельный log-файл для концентрирования сообщений, начинающиеся с Error/error/Err/err
