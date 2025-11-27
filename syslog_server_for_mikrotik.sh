@@ -3,7 +3,7 @@
 #Run with sudo
 #by Tren3000 for Astar Linux 1.8 Smolensk
 
-echo -e "\e[32mЗапускайте скрипт от sudo-пользователя\e[0m"
+echo -e "\e[32mЗапускайте скрипт от sudo-пользователя\e[0m";sleep 2; echo
 echo -e "\e[32mЕсли готовы, то нажмите Enter, чтобы продолжить...\e[0m"
 read -p "" # pause for waiting user, to start
 
@@ -37,7 +37,16 @@ if [ ! -w "/etc/syslog-ng/syslog-ng.conf" ]; then
         exit 3
     fi
 else
-    echo -e "\e[32msyslog-ng уже установлен и доступен для редактирования.\e[0m"
+    echo -e "\e[32msyslog-ng уже установлен и доступен для редактирования\e[0m";sleep 2; echo
+fi
+
+#Add log directory
+LOG_DIR="/var/log/remote_logs/"
+
+if [ ! -d "$LOG_DIR" ]; then
+    mkdir -p "$LOG_DIR"
+    chmod 750 "$LOG_DIR"
+    echo -e "\e[32mСоздан каталог для логов: $LOG_DIR с правами доступа 750\e[0m";sleep 2; echo
 fi
 
 # BackUp syslog.conf
@@ -52,11 +61,12 @@ echo -e "\e[32mBackUp конфигурационного файла syslog-ng у
 
 # Starting to write syslog-ng conf-file
 
-echo -e "\e[32mСоздаю запись в конфигурационный файл syslog-ng ... \e[0m";sleep 2; echo
+echo -e "\e[32mПроверка наличия и доступа конфигурационного файла syslog-ng ... \e[0m";sleep 2; echo
 if [ ! -w "/etc/syslog-ng/syslog-ng.conf" ]
     then
         echo -e "\e[31mОшибка!\e[0m \e[33mНе хватает прав для редактирования настроек syslog-ng (error_04)\e[0m"
     exit 4
+echo -e "\e[32mКонфигурационный файл существует и доступ получен \e[0m";sleep 2; echo
 fi
 
 # Check protocol
@@ -69,6 +79,7 @@ while true; do
     fi
 done
 
+##########################################################################////SERVER//////###################################################
 # Check SERVER IP
 while true; do
     echo -e "\e[32mВаш IP-адрес - $(hostname -I) Введите IP-адрес сервера логов: \e[0m"; read ip_address
@@ -84,6 +95,7 @@ while true; do
         done
         if $valid_ip; then
             break
+            fi
         else
             echo -e "\e[31mОшибка!\e[0m \e[33mIP-адрес содержит недопустимые значения\e[0m"
         fi
@@ -109,9 +121,11 @@ echo "# Mikrotik logs by Tren3000" >> /etc/syslog-ng/syslog-ng.conf
 echo "######################################" >> /etc/syslog-ng/syslog-ng.conf
 echo "source s_net { $protocol(ip($ip_address) port($port)); };" >> /etc/syslog-ng/syslog-ng.conf
 echo -e "\e[32mЗапись, в конфигурационный файл, успешно добавлена! \e[0m";sleep 2; echo
-echo -e "\e[32mСоздание файла конфигурации syslog-ng для Mikrotik ... \e[0m";sleep 2; echo
+##########################################################################////END_SERVER//////###################################################
 
+##########################################################################////SENDER//////###################################################
 #Create Mikrotik.conf
+echo -e "\e[32mСоздание файла конфигурации syslog-ng для Mikrotik ... \e[0m";sleep 2; echo
 touch /etc/syslog-ng/conf.d/mikrotik.conf 2>/dev/null
 if [ -e /etc/syslog-ng/conf.d/mikrotik.conf ]; then
     echo -e "\e[32mФайл конфигурации syslog-ng для Mikrotik успешно создан \e[0m"
@@ -119,14 +133,11 @@ else
     echo -e "\e[33mФайл конфигурации Mikrotik уже существует. Запись будет производиться в существующий файл\e[0m"
 fi
 
-# Write SERVER IP
-#
-# Check ip if it is exist
+# Check SENDER ip if it is exist
 function ip_exists_in_config() {
     local ip="$1"
     grep -q "netmask("$sender_ip_address/255.255.255.255")" /etc/syslog-ng/conf.d/mikrotik.conf
 }
-
 # Check first sender ip
 while true; do
     echo -e "\e[32mВведите IP-адрес отправителя логов: \e[0m"
@@ -161,7 +172,7 @@ sleep 2
 echo "######################################" >> /etc/syslog-ng/conf.d/mikrotik.conf
 echo "# Mikrotik logs by Tren3000" >> /etc/syslog-ng/conf.d/mikrotik.conf
 echo "######################################" >> /etc/syslog-ng/conf.d/mikrotik.conf
-echo "destination d_mikrotik { file("/var/log/_remote/mikrotik.log"); };" >> /etc/syslog-ng/conf.d/mikrotik.conf
+echo "destination d_mikrotik { file("/var/log/remote_logs/mikrotik.log"); };" >> /etc/syslog-ng/conf.d/mikrotik.conf
 echo "filter f_mikrotik { netmask("$sender_ip_address/255.255.255.255"); };" >> /etc/syslog-ng/conf.d/mikrotik.conf
 echo "log { source(s_net); filter(f_mikrotik); destination(d_mikrotik); };" >> /etc/syslog-ng/conf.d/mikrotik.conf
 
@@ -197,13 +208,23 @@ while true; do
                 echo -e "\e[31mОшибка!\e[0m  \e[33mНеверный формат IP-адреса\e[0m"
             fi
         done
+
+        #Counter
+        COUNTER_FILE="/tmp/mikrotik_counter.txt"
+        if [ ! -f "$COUNTER_FILE" ]; then
+        echo 0 > "$COUNTER_FILE"
+        fi
+        counter=$(cat "$COUNTER_FILE")
+        counter=$((counter + 1))
+        echo "$counter" > "$COUNTER_FILE"
+        
         # Запись новых настроек в конфигурационный файл
         echo "######################################" >> /etc/syslog-ng/conf.d/mikrotik.conf
         echo "# Mikrotik logs by Tren3000" >> /etc/syslog-ng/conf.d/mikrotik.conf
         echo "######################################" >> /etc/syslog-ng/conf.d/mikrotik.conf
-        echo "destination d_mikrotik { file("/var/log/_remote/mikrotik.log"); };" >> /etc/syslog-ng/conf.d/mikrotik.conf
-        echo "filter f_mikrotik { netmask("$sender_ip_address/255.255.255.255"); };" >> /etc/syslog-ng/conf.d/mikrotik.conf
-        echo "log { source(s_net); filter(f_mikrotik); destination(d_mikrotik); };" >> /etc/syslog-ng/conf.d/mikrotik.conf
+        echo "destination d_mikrotik_${counter} { file("/var/log/remote_logs/mikrotik.log"); };" >> /etc/syslog-ng/conf.d/mikrotik.conf
+        echo "filter f_mikrotik_${counter} { netmask("$sender_ip_address/255.255.255.255"); };" >> /etc/syslog-ng/conf.d/mikrotik.conf
+        echo "log { source(s_net); filter(f_mikrotik_${counter}); destination(d_mikrotik_${counter}); };" >> /etc/syslog-ng/conf.d/mikrotik.conf
     elif [[ "$add_more" =~ ^[Nn]$ ]]; then
         echo -e "\e[32mЗавершение добавления IP-адресов\e[0m"
         break
@@ -211,6 +232,7 @@ while true; do
         echo "\e[33mПожалуйста, введите y или n.\e[0m"
     fi
 done
+##########################################################################////END_SENDER//////###################################################
 echo -e "\e[32mПерезазапускаю службу syslog-ng ...\e[0m";sleep 2; echo
 sudo systemctl restart syslog-ng
 # Restart syslog-ng
