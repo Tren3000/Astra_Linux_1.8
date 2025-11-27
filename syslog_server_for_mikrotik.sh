@@ -117,9 +117,7 @@ done
 echo -e "\e[32mПроизводится запись в конфигурационный файл ... \e[0m";sleep 2; echo
 
 # If code already exist in syslog-ng-conf
-expected_source_line="source s_net { $protocol(ip($ip_address) port($port)); };"
-
-if ! grep -Fq "$expected_source_line" /etc/syslog-ng/syslog-ng.conf; then
+if ! grep -E '^\s*source s_net' /etc/syslog-ng/syslog-ng.conf; then
     echo >> /etc/syslog-ng/syslog-ng.conf
     echo "######################################" >> /etc/syslog-ng/syslog-ng.conf
     echo "# Mikrotik logs by Tren3000" >> /etc/syslog-ng/syslog-ng.conf
