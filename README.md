@@ -1,9 +1,10 @@
-Scripts for optimization 
-OS Astra Linux 1.8 Smolensk 
+Скрипты для оптимизации задач
+OS Astra Linux 1.7/1.8/Debian/Ubuntu
 
-Contains:
-  -  Scrips is making custom log-file, whitch contain words Error/error/Err/err
-  - Changing Grub2 - password
+Состав:
+  - error_log_syslog.sh Скрипт создающий отдельный log-файл для концентрирования сообщений, начинающиеся с Error/error/Err/err
+  - change_pass_GRUB2.sh Скрипт изменяющий пароль загрузчика GRUB2
+  - syslog_server_for_mikrotik.sh Скрипт создающий сервер логов, на syslog-ng, в случае отсутствия, устанавливает его и добавляет конфигурационные файлы, записи в них и папку с готовым логом. Скрипт настроен, на множество проверок, по вводимым данным и наличию(отсутствию файлов) и прав пользователя
   -  ........inprogress........
                     
                     
