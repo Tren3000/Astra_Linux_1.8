@@ -216,6 +216,7 @@ while true; do
         done
 
         #Counter
+        touch /tmp/mikrotik_counter.txt &>/dev/null
         COUNTER_FILE="/tmp/mikrotik_counter.txt"
         if [ ! -f "$COUNTER_FILE" ]; then
         echo 0 > "$COUNTER_FILE"
