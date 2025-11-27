@@ -111,12 +111,20 @@ echo "source s_net { $protocol(ip($ip_address) port($port)); };" >> /etc/syslog-
 echo -e "\e[32mЗапись, в конфигурационный файл, успешно добавлена! \e[0m";sleep 2; echo
 echo -e "\e[32mСоздание файла конфигурации syslog-ng для Mikrotik ... \e[0m";sleep 2; echo
 
-# Write SENDER IP
+#Create Mikrotik.conf
+touch /etc/syslog-ng/conf.d/mikrotik.conf 2>/dev/null
+if [ -e /etc/syslog-ng/conf.d/mikrotik.conf ]; then
+    echo -e "\e[32mФайл конфигурации syslog-ng для Mikrotik успешно создан \e[0m"
+else
+    echo -e "\e[33mФайл конфигурации Mikrotik уже существует. Запись будет производиться в существующий файл\e[0m"
+fi
+
+# Write SERVER IP
 #
 # Check ip if it is exist
 function ip_exists_in_config() {
     local ip="$1"
-    grep -q "netmask("$ip/255.255.255.255")" /etc/syslog-ng/conf.d/mikrotik.conf
+    grep -q "netmask("$sender_ip_address/255.255.255.255")" /etc/syslog-ng/conf.d/mikrotik.conf
 }
 
 # Check first sender ip
@@ -147,13 +155,6 @@ while true; do
     fi
 done
 
-touch /etc/syslog-ng/conf.d/mikrotik.conf 2>/dev/null
-if [ -e /etc/syslog-ng/conf.d/mikrotik.conf ]; then
-    echo -e "\e[32mФайл конфигурации syslog-ng для Mikrotik успешно создан \e[0m"
-else
-    echo -e "\e[31mОшибка!\e[0m \e[33mНе удалось создать файл конфигурации Mikrotik! Проверьте права доступа! (error_05)\e[0m"
-    exit 5
-fi
 
 echo -e "\e[32mВносятся изменения, в файл конфигурации Mikrotik ... \e[0m"
 sleep 2
@@ -210,8 +211,13 @@ while true; do
         echo "\e[33mПожалуйста, введите y или n.\e[0m"
     fi
 done
-
+echo -e "\e[32mПерезазапускаю службу syslog-ng ...\e[0m";sleep 2; echo
+sudo systemctl restart syslog-ng
+# Restart syslog-ng
+systemctl restart syslog-ng
+# Check status
+echo "Проверка статуса службы syslog-ng:";sleep 2; echo
+systemctl status syslog-ng --no-pager || echo -e "\e[33mПроверка статуса не удалась, но, в целом .... \e[0m"
 echo -e "\e[32mУстановка завершена успешно! ... by Tren3000 ... \e[0m"
-
 
 exit 0
