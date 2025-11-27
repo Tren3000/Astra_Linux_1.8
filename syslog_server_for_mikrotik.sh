@@ -1,5 +1,4 @@
 #!/usr/bin/bash
-#Scrips is making custom log-file, whitch contain words Error/error/Err/err
 #Run with sudo
 #by Tren3000 for Astar Linux 1.8 Smolensk
 
