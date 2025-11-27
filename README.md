@@ -6,10 +6,9 @@ OS Astra Linux 1.8
   - change_pass_GRUB2.sh Скрипт изменяющий пароль загрузчика GRUB2
   - syslog_server_for_mikrotik.sh Скрипт создающий сервер логов, на syslog-ng, в случае отсутствия, устанавливает его и добавляет конфигурационные файлы, записи в них и папку с готовым логом. Скрипт настроен, на множество проверок, по вводимым данным и наличию(отсутствию файлов) и прав пользователя
 
-<img width="703" height="655" alt="изображение" src="https://github.com/user-attachments/assets/e8fd7ac4-145d-4517-99b7-b5d4536eab34" />
+<img width="703" height="655" alt="519773651-e8fd7ac4-145d-4517-99b7-b5d4536eab34" src="https://github.com/user-attachments/assets/421db71b-e6a1-44f1-b502-1abba7374011" />
 
-   
-  -  ........inprogress........
+-  ........inprogress........
                     
                     
 
