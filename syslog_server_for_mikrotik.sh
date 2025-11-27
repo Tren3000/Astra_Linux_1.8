@@ -71,7 +71,7 @@ done
 
 # Check SERVER IP
 while true; do
-    echo -e "\e[32mВведите IP-адрес сервера логов: \e[0m"; read ip_address
+    echo -e "\e[32mВаш IP-адрес - $(hostname -I) Введите IP-адрес сервера логов: \e[0m"; read ip_address
     if [[ "$ip_address" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
         # Check oktet
         IFS='.' read -r -a octets <<< "$ip_address"
@@ -94,7 +94,7 @@ done
 
 # Check port
 while true; do
-    echo -e "\e[32mВведите номер порта (1-65535): \e[0m"; read port
+    echo -e "\e[32mВведите номер порта (1-65535), по умолчанию 514: \e[0m"; read port
     if [[ "$port" =~ ^[0-9]+$ ]] && (( port >= 1 && port <= 65535 )); then
         break
     else
@@ -204,7 +204,7 @@ while true; do
         echo "filter f_mikrotik { netmask("$sender_ip_address/255.255.255.255"); };" >> /etc/syslog-ng/conf.d/mikrotik.conf
         echo "log { source(s_net); filter(f_mikrotik); destination(d_mikrotik); };" >> /etc/syslog-ng/conf.d/mikrotik.conf
     elif [[ "$add_more" =~ ^[Nn]$ ]]; then
-        echo "\e[32mЗавершение добавления IP-адресов.\e[0m"
+        echo -e "\e[32mЗавершение добавления IP-адресов\e[0m"
         break
     else
         echo "\e[33mПожалуйста, введите y или n.\e[0m"
