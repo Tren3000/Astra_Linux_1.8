@@ -5,8 +5,10 @@ OS Astra Linux 1.8
   - error_log_syslog.sh Скрипт создающий отдельный log-файл для концентрирования сообщений, начинающиеся с Error/error/Err/err
   - change_pass_GRUB2.sh Скрипт изменяющий пароль загрузчика GRUB2
   - syslog_server_for_mikrotik.sh Скрипт создающий сервер логов, на syslog-ng, в случае отсутствия, устанавливает его и добавляет конфигурационные файлы, записи в них и папку с готовым логом. Скрипт настроен, на множество проверок, по вводимым данным и наличию(отсутствию файлов) и прав пользователя
-    <img width="703" height="639" alt="изображение" src="https://github.com/user-attachments/assets/b9273f79-24fd-4bb9-ae2e-44e77a55ecd1" />
 
+<img width="703" height="655" alt="изображение" src="https://github.com/user-attachments/assets/e8fd7ac4-145d-4517-99b7-b5d4536eab34" />
+
+   
   -  ........inprogress........
                     
                     
