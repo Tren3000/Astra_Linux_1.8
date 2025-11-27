@@ -9,7 +9,7 @@ read -p "" # pause for waiting user, to start
 
 # Am i root ?????
 if [ "$EUID" -ne 0 ]; then
-    echo -e "\e[31mОшибка!\e[0m \e[33mСкрипт запущен не от имени root (error_01)\e[0m"
+    echo -e "\e[31mОшибка!\e[0m \e[33Скрипт запущен не от имени root (error_01)\e[0m"
     exit 1
 fi
 
@@ -116,7 +116,7 @@ echo -e "\e[32mСоздание файла конфигурации syslog-ng д
 # Check ip if it is exist
 function ip_exists_in_config() {
     local ip="$1"
-    grep -q "netmask(\"$ip/255.255.255.255\")" /etc/syslog-ng/conf.d/mikrotik.conf
+    grep -q "netmask("$ip/255.255.255.255")" /etc/syslog-ng/conf.d/mikrotik.conf
 }
 
 # Check first sender ip
