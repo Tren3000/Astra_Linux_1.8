@@ -9,7 +9,7 @@ read -p "" # pause for waiting user, to start
 
 # Am i root ?????
 if [ "$EUID" -ne 0 ]; then
-    echo -e "\e[31mОшибка!\e[0m \e[33Скрипт запущен не от имени root (error_01)\e[0m"
+    echo -e "\e[31mОшибка!\e[0m \e[33mСкрипт запущен не от имени root (error_01)\e[0m"
     exit 1
 fi
 
