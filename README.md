@@ -9,7 +9,7 @@
     <img width="703" height="655" alt="изображение" src="https://github.com/user-attachments/assets/dc84256f-a79d-4914-ba7c-f39e7af9c5ca" />
 
 
--  ........inprogress........
++  ........in progress........
                     
                     
 
