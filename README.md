@@ -13,4 +13,4 @@
 +  ........in progress........
                     
                     
-<span style="color:blue;">Синий текст в README</span>
+<span style="color: blue;">Синий текст в README</span>
