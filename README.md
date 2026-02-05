@@ -1,3 +1,5 @@
+<img width="1270" height="444" alt="изображение" src="https://github.com/user-attachments/assets/2fe33899-ff65-46a1-937c-840d777403e1" />
+
 Скрипты для оптимизации задач
 OS Astra Linux 1.8
 
