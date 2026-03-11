@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 #Scrips fot changings/add GRUB2 password
 #Run with sudo
-#by Tren3000 for Astar Linux 1.8 Smolensk
+#by Tren3000 for Astra Linux 1.8 Smolensk
 if [ ! -w "/boot/grub/user.cfg" ]
     then
         echo "Ошибка! Нехватает прав для изменения user.cfg (error_01)"
