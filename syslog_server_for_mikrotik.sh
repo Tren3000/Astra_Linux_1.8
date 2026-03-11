@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 #Run with sudo
-#by Tren3000 for Astar Linux 1.8 Smolensk
+#by Tren3000 for Astra Linux 1.8 Smolensk
 
 echo -e "\e[32mЗапускайте скрипт от sudo-пользователя\e[0m";sleep 2; echo
 echo -e "\e[32mЕсли готовы, то нажмите Enter, чтобы продолжить...\e[0m"
